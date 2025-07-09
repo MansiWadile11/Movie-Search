@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Movie Details</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <button onclick="goBack()">← Back to Search</button>
+    <div id="movieDetails" class="movie-details"></div>
+  </div>
+
+  <script>
+    function goBack() {
+      window.location.href = 'index.html';
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const movieId = params.get('id');
+
+    fetch(`https://www.omdbapi.com/?apikey=f51d8855&i=${movieId}`)
+      .then(res => res.json())
+      .then(data => {
+        const details = `
+          <img src="${data.Poster}" alt="${data.Title}" />
+          <h2>${data.Title} (${data.Year})</h2>
+          <p><strong>IMDB Rating:</strong> ${data.imdbRating}</p>
+          <p><strong>Director:</strong> ${data.Director}</p>
+          <p><strong>Actors:</strong> ${data.Actors}</p>
+          <p><strong>Plot:</strong> ${data.Plot}</p>
+        `;
+        document.getElementById('movieDetails').innerHTML = details;
+      });
+  </script>
+</body>
+</html>
